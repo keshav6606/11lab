@@ -1,0 +1,29 @@
+{
+  "name": "elevenlabs-opensource-studio",
+  "version": "1.0.0",
+  "description": "Unified Open-Source ElevenLabs Alternative Studio (F5-TTS, Kokoro, XTTS, ChatTTS, Edge Neural)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "tts",
+    "voice-cloning",
+    "elevenlabs",
+    "f5-tts",
+    "kokoro",
+    "xtts",
+    "chattts"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@gradio/client": "^1.13.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "kokoro-js": "^1.2.1",
+    "msedge-tts": "^2.0.9",
+    "multer": "^1.4.5-lts.1"
+  }
+}

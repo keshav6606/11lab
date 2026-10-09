@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElevenLabs Open-Source AI Studio | Free SOTA TTS & Voice Cloning</title>
+  <meta name="description" content="Best open-source free alternative to ElevenLabs powered by Kokoro, F5-TTS, Edge Neural, ChatTTS & XTTS. Free zero-shot voice cloning and text to speech.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M4 10V14M8 6V18M12 2V22M16 7V17M20 11V13" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="logo-grad" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#818CF8"/>
+                <stop offset="0.5" stop-color="#C084FC"/>
+                <stop offset="1" stop-color="#F472B6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand-name">Eleven<span class="gradient-text">OS</span></span>
+          <span class="badge">Open Source SOTA</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <nav class="nav-tabs">
+        <button class="nav-tab active" id="tab-tts" data-tab="tts">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+          </svg>
+          Speech Synthesis
+        </button>
+        <button class="nav-tab" id="tab-clone" data-tab="clone">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+          </svg>
+          Voice Cloning (F5-TTS)
+        </button>
+        <button class="nav-tab" id="tab-deploy" data-tab="deploy">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+          Host Anywhere (Vercel/Render/VPS)
+        </button>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <button class="key-status-btn" id="btn-key-modal" title="Configure ElevenLabs API Key for 100% natural studio voices">
+        <span class="key-status-dot inactive" id="header-key-dot"></span>
+        <span id="header-key-text">ElevenLabs Key</span>
+      </button>
+      <div class="system-status">
+        <span class="status-indicator"></span>
+        <span class="status-label">All Engines Active</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" id="btn-open-api">
+        API Docs
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    
+    <!-- LEFT WORKSPACE: Input & Controls -->
+    <section class="workspace-card" id="workspace-container">
+      
+      <!-- MODE 1: Text to Speech -->
+      <div class="mode-content active" id="mode-tts">
+        <div class="section-title-row">
+          <div>
+            <h1 class="section-heading">Text to Speech Studio</h1>
+            <p class="section-sub">Generate ultra-natural human voices across 300+ accents, Hindi, English, and emotional speech</p>
+          </div>
+          <div class="engine-pills" id="engine-selector">
+            <button class="engine-pill active" data-engine="elevenlabs">
+              <span class="pill-dot"></span> 🌟 ElevenLabs (Ultra-Natural)
+            </button>
+            <button class="engine-pill" data-engine="edge-neural">
+              <span class="pill-dot"></span> ⚡ Edge Neural (Free Studio)
+            </button>
+            <button class="engine-pill" data-engine="kokoro">
+              <span class="pill-dot"></span> 🚀 Kokoro-82M (SOTA English)
+            </button>
+          </div>
+        </div>
+
+        <!-- Voice Selector Bar -->
+        <div class="voice-picker-panel">
+          <div class="voice-picker-header">
+            <label class="control-label">Select Voice Actor</label>
+            <div class="voice-filters">
+              <button class="filter-chip active" data-filter="all">All</button>
+              <button class="filter-chip" data-filter="elevenlabs">🌟 ElevenLabs (Natural)</button>
+              <button class="filter-chip" data-filter="hi-IN">🇮🇳 Hindi / Indian</button>
+              <button class="filter-chip" data-filter="kokoro">🚀 Kokoro AI</button>
+              <button class="filter-chip" data-filter="en-US">🇺🇸 US Voices</button>
+              <button class="filter-chip" data-filter="en-GB">🇬🇧 UK Voices</button>
+            </div>
+          </div>
+
+          <div class="voice-cards-grid" id="voice-cards-container">
+            <!-- Dynamically injected voices -->
+          </div>
+        </div>
+
+        <!-- Text Input Area -->
+        <div class="input-card">
+          <div class="input-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="label">Script Prompt</span>
+              <span id="lang-detect-badge" class="badge" style="display: none; background: rgba(16, 185, 129, 0.2); color: #34D399; border-color: rgba(16, 185, 129, 0.4);">🇮🇳 Hindi Detected</span>
+            </div>
+            <div class="quick-examples">
+              <span class="quick-title">Presets:</span>
+              <button class="preset-btn" data-text="नमस्ते! आप इस वीडियो पर क्लिक किए हो यानी आप बिल्कुल सही जगह आए हो।">Hindi Demo</button>
+              <button class="preset-btn" data-text="Hello! Welcome to ElevenOS, the open-source alternative to ElevenLabs.">English Demo</button>
+              <button class="preset-btn" data-text="In a world where artificial intelligence redefines reality, one voice stands out with breathtaking clarity.">Narrator</button>
+            </div>
+          </div>
+          <textarea id="tts-input-text" placeholder="Type or paste your text here (English, Hindi, etc.)..." rows="5">नमस्ते! आप इस वीडियो पर क्लिक किए हो यानी आप बिल्कुल सही जगह आए हो।</textarea>
+          
+          <div class="input-footer">
+            <div class="char-count"><span id="char-num">65</span> characters</div>
+            <div class="audio-controls">
+              <div class="slider-group">
+                <span class="slider-label">Speed: <b id="speed-val">1.0x</b></span>
+                <input type="range" id="speed-slider" min="0.5" max="2.0" step="0.1" value="1.0">
+              </div>
+              <div class="slider-group">
+                <span class="slider-label">Pitch: <b id="pitch-val">0%</b></span>
+                <input type="range" id="pitch-slider" min="-50" max="50" step="5" value="0">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="action-row">
+          <button class="btn btn-primary btn-generate" id="btn-generate-tts">
+            <svg class="icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span id="btn-tts-text">Generate Speech</span>
+            <div class="loader-spinner" id="tts-spinner"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- MODE 2: Voice Cloning (F5-TTS) -->
+      <div class="mode-content" id="mode-clone">
+        <div class="section-title-row">
+          <div>
+            <h1 class="section-heading">Zero-Shot Voice Cloning (F5-TTS)</h1>
+            <p class="section-sub">Upload 5 to 10 seconds of any person's audio sample and clone their voice instantly</p>
+          </div>
+          <span class="tech-badge">SOTA Flow-Matching</span>
+        </div>
+
+        <div class="clone-grid">
+          <!-- Step 1: Upload Reference Audio -->
+          <div class="clone-step-card">
+            <div class="step-badge">Step 1</div>
+            <h3 class="step-title">Upload Voice Sample</h3>
+            <p class="step-desc">A clear audio recording without background noise (WAV/MP3)</p>
+            
+            <div class="drop-zone" id="audio-drop-zone">
+              <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+              </svg>
+              <p class="drop-title">Drag & drop reference voice clip</p>
+              <p class="drop-subtitle">or click to browse (.wav, .mp3, .m4a)</p>
+              <input type="file" id="clone-file-input" accept="audio/*" style="display: none;">
+              <div class="file-preview-pill" id="file-preview-pill" style="display: none;">
+                <span class="file-name" id="file-preview-name">sample.wav</span>
+                <button class="btn-remove-file" id="btn-remove-file">×</button>
+              </div>
+            </div>
+
+            <div class="ref-text-field">
+              <label class="control-label">Reference Audio Transcript (Optional)</label>
+              <input type="text" id="clone-ref-transcript" placeholder="Exact words spoken in the audio sample (helps precision)">
+            </div>
+          </div>
+
+          <!-- Step 2: Target Script -->
+          <div class="clone-step-card">
+            <div class="step-badge">Step 2</div>
+            <h3 class="step-title">New Speech to Generate</h3>
+            <p class="step-desc">What should the cloned voice say?</p>
+            
+            <textarea id="clone-target-text" rows="6" placeholder="Enter the new dialogue or script that the cloned voice will speak...">Hey there! This is my cloned voice speaking, generated using open-source F5-TTS without any expensive subscriptions.</textarea>
+
+            <button class="btn btn-primary btn-generate" id="btn-clone-tts" style="margin-top: 18px; width: 100%;">
+              <svg class="icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+              </svg>
+              <span id="btn-clone-text">Clone & Synthesize Voice</span>
+              <div class="loader-spinner" id="clone-spinner"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODE 3: Hosting / Deployment Guide -->
+      <div class="mode-content" id="mode-deploy">
+        <div class="section-title-row">
+          <div>
+            <h1 class="section-heading">Deploy Anywhere in 2 Minutes</h1>
+            <p class="section-sub">Free 1-click cloud deployment for Render, Vercel, Koyeb, Railway, and VPS</p>
+          </div>
+        </div>
+
+        <div class="deploy-grid">
+          <!-- Render -->
+          <div class="deploy-card">
+            <div class="deploy-header">
+              <div class="deploy-icon-box render-icon">R</div>
+              <div>
+                <h3 class="deploy-name">Render (Free Web Service)</h3>
+                <span class="deploy-tag">Recommended for Backend</span>
+              </div>
+            </div>
+            <p class="deploy-desc">Full persistent Node.js audio server with 1-click Blueprint.</p>
+            <div class="code-box">
+              <code>git push origin main</code>
+              <button class="copy-btn" data-copy="Connect repo to Render -> Pick Web Service -> Build: npm install -> Start: node server.js">Copy</button>
+            </div>
+            <ul class="deploy-steps">
+              <li>1. Push this folder to your GitHub repo.</li>
+              <li>2. Click "New Web Service" on Render.com.</li>
+              <li>3. Set Start Command: <code>node server.js</code>.</li>
+            </ul>
+          </div>
+
+          <!-- Vercel -->
+          <div class="deploy-card">
+            <div class="deploy-header">
+              <div class="deploy-icon-box vercel-icon">▲</div>
+              <div>
+                <h3 class="deploy-name">Vercel (Serverless)</h3>
+                <span class="deploy-tag">Instant Global CDN</span>
+              </div>
+            </div>
+            <p class="deploy-desc">Pre-configured with <code>vercel.json</code> and serverless API.</p>
+            <div class="code-box">
+              <code>npx vercel --prod</code>
+              <button class="copy-btn" data-copy="npx vercel --prod">Copy</button>
+            </div>
+            <ul class="deploy-steps">
+              <li>1. Run <code>npx vercel</code> in this directory.</li>
+              <li>2. Done! Your API and frontend are live.</li>
+            </ul>
+          </div>
+
+          <!-- Koyeb -->
+          <div class="deploy-card">
+            <div class="deploy-header">
+              <div class="deploy-icon-box koyeb-icon">K</div>
+              <div>
+                <h3 class="deploy-name">Koyeb (Free Docker Hosting)</h3>
+                <span class="deploy-tag">No Sleep / Always On</span>
+              </div>
+            </div>
+            <p class="deploy-desc">Deploy using the included multi-stage <code>Dockerfile</code>.</p>
+            <div class="code-box">
+              <code>koyeb app init elevenlabs --docker</code>
+              <button class="copy-btn" data-copy="koyeb app init elevenlabs --docker">Copy</button>
+            </div>
+            <ul class="deploy-steps">
+              <li>1. Connect GitHub repo on Koyeb.com.</li>
+              <li>2. Auto-detects <code>Dockerfile</code>.</li>
+              <li>3. Port <code>7860</code> auto-exposed.</li>
+            </ul>
+          </div>
+
+          <!-- VPS -->
+          <div class="deploy-card">
+            <div class="deploy-header">
+              <div class="deploy-icon-box vps-icon">🐧</div>
+              <div>
+                <h3 class="deploy-name">VPS / Ubuntu / Debian</h3>
+                <span class="deploy-tag">Full Performance</span>
+              </div>
+            </div>
+            <p class="deploy-desc">Single command Docker Compose for any Linux VPS.</p>
+            <div class="code-box">
+              <code>docker compose up -d --build</code>
+              <button class="copy-btn" data-copy="docker compose up -d --build">Copy</button>
+            </div>
+            <ul class="deploy-steps">
+              <li>1. Clone repo on VPS.</li>
+              <li>2. Run <code>docker compose up -d</code>.</li>
+              <li>3. Instant access on port 7860!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT WORKSPACE: Live Audio Player & History -->
+    <aside class="player-panel">
+      
+      <!-- Current Audio Player Card -->
+      <div class="audio-player-card">
+        <div class="card-glow"></div>
+        <div class="player-header">
+          <div class="voice-avatar" id="player-avatar">🎙️</div>
+          <div class="voice-meta">
+            <h4 class="player-title" id="player-title">No Audio Generated Yet</h4>
+            <span class="player-subtitle" id="player-subtitle">Select a voice and click Generate</span>
+          </div>
+        </div>
+
+        <!-- Waveform Visualizer -->
+        <div class="visualizer-container">
+          <canvas id="visualizer-canvas" width="400" height="90"></canvas>
+          <div class="time-display">
+            <span id="current-time">00:00</span>
+            <span id="total-time">00:00</span>
+          </div>
+        </div>
+
+        <!-- Native Audio Bar with auto fallback -->
+        <div style="margin-top: 10px; margin-bottom: 12px;">
+          <audio id="main-audio-element" controls style="width: 100%; border-radius: 8px; filter: invert(0.9) hue-rotate(180deg);"></audio>
+        </div>
+
+        <!-- Player Controls -->
+        <div class="player-actions">
+          <button class="player-btn" id="btn-replay" title="Replay">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+          </button>
+          <button class="player-btn primary-play" id="btn-play-pause">
+            <svg id="icon-play" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <svg id="icon-pause" width="22" height="22" fill="currentColor" viewBox="0 0 24 24" style="display: none;">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+          <a class="player-btn" id="btn-download-audio" download="speech.mp3" title="Download Audio">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- History Section -->
+      <div class="history-panel">
+        <div class="history-header">
+          <h3 class="history-title">Audio Generations History</h3>
+          <button class="btn-clear-history" id="btn-refresh-history" title="Refresh">↻ Refresh</button>
+        </div>
+        <div class="history-list" id="history-container">
+          <div class="empty-history">
+            <svg width="36" height="36" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+            <p>Your generated audio clips will appear here</p>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </main>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toast-message"></div>
+
+  <!-- API Modal -->
+  <div class="modal-backdrop" id="api-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Python & REST API Integration</h3>
+        <button class="modal-close" id="btn-close-modal">×</button>
+      </div>
+      <div class="modal-body">
+        <h4>Python Usage (3 lines)</h4>
+        <pre><code class="lang-python">import requests
+
+res = requests.post("http://localhost:7860/api/tts/generate", json={
+    "text": "Hello world from Python!",
+    "voice": "en-US-JennyNeural",
+    "engine": "edge-neural"
+})
+with open("speech.mp3", "wb") as f:
+    f.write(requests.get(f"http://localhost:7860{res.json()['audioUrl']}").content)
+</code></pre>
+        <h4>Voice Cloning Endpoint (cURL)</h4>
+        <pre><code>curl -X POST http://localhost:7860/api/tts/clone \
+  -F "referenceAudio=@sample.wav" \
+  -F "text=Hello, this is cloned speech"</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ElevenLabs Key Modal -->
+  <div class="modal-backdrop" id="key-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🌟 ElevenLabs Ultra-Natural Engine Setup</h3>
+        <button class="modal-close" id="btn-close-key-modal">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="key-modal-hint">
+          ElevenLabs provides the world's most realistic, 100% human-natural AI speech (with real emotion, breathing, pauses & laughter in Hindi, English and 29 languages).
+        </p>
+
+        <div class="key-input-group">
+          <label class="key-input-label" for="elevenlabs-key-input">Your ElevenLabs API Key</label>
+          <div class="key-input-wrapper">
+            <input type="password" id="elevenlabs-key-input" class="key-input-field" placeholder="sk_... or xi-api-key" autocomplete="off" />
+            <button type="button" class="btn-toggle-key-visibility" id="btn-toggle-key" title="Toggle visibility">👁️</button>
+          </div>
+        </div>
+
+        <p class="key-modal-hint">
+          💡 <b>Don't have a key?</b> You can get a <b>Free API Key</b> with 10,000 characters free every month at <a href="https://elevenlabs.io" target="_blank" rel="noreferrer">elevenlabs.io</a>! Or click "Use 100% Free Mode" to use our built-in Studio Neural & Kokoro engines without any key.
+        </p>
+
+        <div class="key-modal-actions">
+          <button class="btn btn-secondary" id="btn-use-free-mode">Use 100% Free Mode</button>
+          <button class="btn btn-primary" id="btn-save-key">Save & Activate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
